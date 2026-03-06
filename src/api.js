@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://web-proj-chatgpt-production.up.railway.app/test-db",
 });
 
 // Attach JWT token to every request
