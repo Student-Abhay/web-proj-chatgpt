@@ -9,6 +9,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const loadProducts = async () => {
@@ -57,8 +58,21 @@ function App() {
         }}
       />
 
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className="w-64 bg-gray-900 text-white p-6 flex flex-col justify-between">
+      <div className={`
+        fixed top-0 left-0 h-full w-64 bg-gray-900 text-white p-6 flex flex-col justify-between z-30
+        transform transition-transform duration-300
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        md:relative md:translate-x-0
+      `}>
         <div>
           <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
           <ul className="space-y-3 text-gray-300">
@@ -77,20 +91,42 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-10">
-        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8">
-          <h1 className="text-3xl font-bold mb-8">Product Management</h1>
-          <AddProduct
-            refresh={loadProducts}
-            editingProduct={editingProduct}
-            setEditingProduct={setEditingProduct}
-          />
-          <ProductList
-            products={products}
-            refresh={loadProducts}
-            setEditingProduct={setEditingProduct}
-            isLoading={isLoading}
-          />
+      <div className="flex-1 flex flex-col min-w-0">
+
+        {/* Mobile top navbar */}
+        <div className="md:hidden flex items-center justify-between bg-gray-900 text-white px-4 py-3">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="text-white text-2xl font-bold"
+          >
+            ☰
+          </button>
+          <h2 className="text-lg font-bold">Admin Panel</h2>
+          <button
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-white text-sm"
+          >
+            Logout
+          </button>
+        </div>
+
+        <div className="flex-1 p-4 md:p-10">
+          <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-4 md:p-8">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
+              Product Management
+            </h1>
+            <AddProduct
+              refresh={loadProducts}
+              editingProduct={editingProduct}
+              setEditingProduct={setEditingProduct}
+            />
+            <ProductList
+              products={products}
+              refresh={loadProducts}
+              setEditingProduct={setEditingProduct}
+              isLoading={isLoading}
+            />
+          </div>
         </div>
       </div>
     </div>
