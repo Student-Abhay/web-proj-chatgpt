@@ -6,7 +6,7 @@ const API = axios.create({
 
 // Attach JWT token to every request
 API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
   }
@@ -26,7 +26,7 @@ API.interceptors.response.use(
     const serverMessage = error.response.data?.error;
 
     if (status === 401) {
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       window.location.href = "/login";
       return Promise.reject(new Error("Session expired. Please login again."));
     }

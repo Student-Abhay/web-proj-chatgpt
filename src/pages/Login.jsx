@@ -15,7 +15,7 @@ export default function Login() {
 
     try {
       const res = await loginUser({ email, password });
-      localStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("token", res.data.token);
       toast.success("Login successful!");
       navigate("/");
     } catch(error) {
