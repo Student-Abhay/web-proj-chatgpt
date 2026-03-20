@@ -685,7 +685,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import toast, { Toaster } from "react-hot-toast";
-import { loginUser } from "../api/auth"; // adjust path if needed
+import { loginUser } from "../api"; // adjust path if needed
  
 gsap.registerPlugin(ScrollTrigger);
  
@@ -1044,7 +1044,7 @@ const LoginPage = () => {
         toast.error(response.error);
       } else {
         toast.success("Login successful!");
-        sessionStorage.setItem("token", response.token ?? response.data?.token);
+        sessionStorage.setItem("token", response.data.token);
         sessionStorage.setItem("user", JSON.stringify(response.user ?? response.data?.user));
  
         // Exit animation → then navigate
